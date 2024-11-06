@@ -1,0 +1,59 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@using System.Drawing
+
+@{
+    string name = ViewBag.Name;
+    string color = ViewBag.Color;
+
+    Dictionary<string,string> users = new Dictionary<string,string>();
+    users.Add("Olga", "ФИО: Петренко Ольга Ивановна, Возвраст: 30 лет");
+    users.Add("Iryna", "ФИО: Демиденко Ирина Дмитровна, Возвраст: 35 лет");
+    users.Add("Maksim", "ФИО: Диденко Максим Олегович, Возвраст: 37 лет");
+}
+
+@functions{
+    public string CheckColor(string colorName)
+    {
+        bool colorExists = typeof(Color)
+            .GetProperties()
+            .Any(prop => prop.Name.Equals(colorName, StringComparison.OrdinalIgnoreCase) && prop.PropertyType == typeof(Color));
+
+        if (colorExists)
+        {
+            return colorName; 
+        }
+        else
+        {
+            return "Black";
+        }
+    }
+
+
+
+}
+
+<!DOCTYPE html>
+<html>
+ <head>
+ <title>Информация о пользователе</title>
+ </head>
+ <body>
+ <h1>Пользователь @name</h1>
+ <p style="color:@CheckColor(color)";">
+  @{
+     string value = "";       
+     if (users.TryGetValue(name,out value))
+     {
+       @value
+     }
+     else
+     {
+       @name
+     }
+   }</p>
+ </body>
+</html>
+
+
